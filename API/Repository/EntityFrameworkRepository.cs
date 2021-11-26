@@ -31,8 +31,8 @@ namespace API.Repository
 		/// <inheritdoc />
 		public void RemoveClient(int clientId)
 		{
-			_db.PhoneNumbers.RemoveRange(_db.PhoneNumbers.Where(o => o.ClientId == clientId));
-			_db.Addresses.RemoveRange(_db.Addresses.Where(o => o.ClientId == clientId));
+			//_db.PhoneNumbers.RemoveRange(_db.PhoneNumbers.Where(o => o.ClientId == clientId));
+			//_db.Addresses.RemoveRange(_db.Addresses.Where(o => o.ClientId == clientId)); i think is gonna cascade anyway will test
 			_db.Clients.Remove(_db.Clients.Find(clientId));
 			_db.SaveChanges();
 		}
@@ -65,6 +65,26 @@ namespace API.Repository
 		public List<Client> FetchAllClients()
 		{
 			return _db.Clients.Include(o => o.Addresses).Include(o => o.PhoneNumbers).ToList();
+		}
+
+		public void AddPhoneNumber(PhoneNumber phone)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void RemovePhoneNumber(int phoneNumberId)
+		{
+			_db.PhoneNumbers.Remove(_db.PhoneNumbers.Find(phoneNumberId));
+		}
+
+		public void UpdatePhoneNumber(PhoneNumber phone)
+		{
+			throw new NotImplementedException();
+		}
+
+		public List<PhoneNumber> FetchAllPhoneNumbers()
+		{
+			return _db.PhoneNumbers.ToList();
 		}
 
 		#endregion

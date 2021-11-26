@@ -12,6 +12,8 @@ namespace DependencyInjectionExample.Repository.Implementations
 	public class FileRepository : IRepository
 	{
 		private static readonly string _path = $"{AppDomain.CurrentDomain.BaseDirectory}db{Path.DirectorySeparatorChar}clients{Path.DirectorySeparatorChar}";
+		private static readonly string _phonesPath = $"{AppDomain.CurrentDomain.BaseDirectory}db{Path.DirectorySeparatorChar}phones{Path.DirectorySeparatorChar}";
+		private static readonly string _addressPath = $"{AppDomain.CurrentDomain.BaseDirectory}db{Path.DirectorySeparatorChar}address{Path.DirectorySeparatorChar}";
 		private static int _nextId = 1;
 		private static int _nextAddressId = 1;
 		private static int _nextPhoneId = 1;
@@ -147,5 +149,79 @@ namespace DependencyInjectionExample.Repository.Implementations
 
 			return clients;
 		}
+
+		/// <inheritdoc />
+		public void AddPhoneNumber(PhoneNumber phone)
+		{
+			if (phone.PhoneNumberId != 0)
+			{
+				// client id might be taken check for that 
+				var existing = InternalFetchClient(phone.PhoneNumberId);
+				if (existing != null)
+					throw new ArgumentException($"phone id {phone.PhoneNumberId} already in use did you mean to do an update?");
+			}
+			phone.PhoneNumberId = _nextPhoneId++;
+			InternalSavePhoneNumber(phone);
+
+		}
+
+		/// <inheritdoc />
+		public void RemovePhoneNumber(int phoneNumberId)
+		{
+			if (File.Exists($"{_phonesPath}{phoneNumberId}.json"))
+				File.Delete($"{_phonesPath}{phoneNumberId}.json");
+		}
+
+		/// <inheritdoc />
+		public void UpdatePhoneNumber(PhoneNumber phone)
+		{
+			var existing = InternalFetchPhoneNumber(phone.PhoneNumberId);
+			if (existing == null)
+				throw new ArgumentException($"phone id {phone.PhoneNumberId} doesn't exist did you want to create it?");
+			existing.ClientId = phone.ClientId;
+			existing.Location = phone.Location;
+			existing.Number = phone.Number;
+		}
+
+		/// <inheritdoc />
+		public List<PhoneNumber> FetchAllPhoneNumbers()
+		{
+			return InternalFetchAllPhoneNumbers();
+		}
+
+		private void InternalSavePhoneNumber(PhoneNumber phoneNumber)
+		{
+			File.WriteAllText($"{_path}{phoneNumber.PhoneNumberId}.json", phoneNumber.ToJson());
+		}
+
+
+		//oh god this is terrible 
+		private List<PhoneNumber> InternalFetchAllPhoneNumbers()
+		{
+			var files = Directory.EnumerateFiles(_phonesPath, "*.json");
+			List<PhoneNumber> phoneNumbers = new List<PhoneNumber>();
+			foreach (var file in files)
+			{
+				try
+				{
+					var id = Convert.ToInt32(file.Substring(_phonesPath.Length).Split('.'));
+					phoneNumbers.Add(InternalFetchPhoneNumber(id));
+				}
+				catch (Exception e)
+				{
+
+				}
+			}
+			return phoneNumbers;
+		}
+
+		private PhoneNumber InternalFetchPhoneNumber(int phoneNumberId)
+		{
+			string path = $"{_phonesPath}{phoneNumberId}.json";
+			if (File.Exists(path))
+				return File.ReadAllText(path).FromJson<PhoneNumber>();
+			return null;
+		}
+
 	}
 }

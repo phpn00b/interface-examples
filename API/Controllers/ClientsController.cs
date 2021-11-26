@@ -57,7 +57,6 @@ namespace API.Controllers
 		{
 			return _repository.FetchAllClients();
 		}
-
 		#endregion
 	}
 }

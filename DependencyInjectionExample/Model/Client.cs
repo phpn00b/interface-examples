@@ -17,5 +17,7 @@ namespace DependencyInjectionExample.Model
 		public List<PhoneNumber> PhoneNumbers { get; set; } = new List<PhoneNumber>();
 
 		public List<Address> Addresses { get; set; } = new List<Address>();
+
+		public string FullName => $"{FirstName} {LastName}";
 	}
 }

@@ -21,5 +21,12 @@ namespace DependencyInjectionExample
 
 		List<Client> FetchAllClients();
 
+		void AddPhoneNumber(PhoneNumber phone);
+
+		void RemovePhoneNumber(int phoneNumberId);
+
+		void UpdatePhoneNumber(PhoneNumber phone);
+
+		List<PhoneNumber> FetchAllPhoneNumbers();
 	}
 }
