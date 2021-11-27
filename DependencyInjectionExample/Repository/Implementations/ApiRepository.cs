@@ -11,12 +11,10 @@ namespace DependencyInjectionExample.Repository.Implementations
 {
 	public class ApiRepository : IRepository
 	{
-		private readonly string _serverUrl;
-		private readonly RestClient _client;
-		public ApiRepository(string serverUrl)
+		private readonly IRestClient _client;
+		public ApiRepository(IRestClient client)
 		{
-			_serverUrl = serverUrl;
-			_client = new RestClient(serverUrl);
+			_client = client;
 		}
 		#region Implementation of IRepository
 

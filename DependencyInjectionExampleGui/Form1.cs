@@ -68,6 +68,8 @@ namespace DependencyInjectionExampleGui
 				client.PhoneNumbers = _phones.Where(p => p.ClientId == client.ClientId).ToList();
 				_repository.UpdateClient(client);
 			}
+
+			ClearClientForm();
 			LoadData();
 		}
 
@@ -95,6 +97,7 @@ namespace DependencyInjectionExampleGui
 				var phone = new PhoneNumber();
 				phone.Number = tbPhoneNumber.Text;
 				phone.Location = tbLocation.Text;
+				phone.ClientId = _clients[cbPhoneClients.SelectedIndex].ClientId;
 				_repository.AddPhoneNumber(phone);
 			}
 			else
@@ -102,8 +105,11 @@ namespace DependencyInjectionExampleGui
 				var phone = _phones[lboxPhones.SelectedIndex];
 				phone.Number = tbPhoneNumber.Text;
 				phone.Location = tbLocation.Text;
-				_repository.RemovePhoneNumber(phone.PhoneNumberId);
+				phone.ClientId = _clients[cbPhoneClients.SelectedIndex].ClientId;
+				_repository.UpdatePhoneNumber(phone);
 			}
+
+			ClearPhoneForm();
 			LoadData();
 		}
 
@@ -118,9 +124,19 @@ namespace DependencyInjectionExampleGui
 			}
 			else
 			{
-				lbClientId.Text = "N/A";
-				tbFirstName.Text = string.Empty;
-				tbLastName.Text = string.Empty;
+				ClearClientForm();
+			}
+		}
+
+		private void ClearClientForm()
+		{
+			lbClientId.Text = "N/A";
+			tbFirstName.Text = string.Empty;
+			tbLastName.Text = string.Empty;
+
+			if (lboxClient.SelectedIndex != -1)
+			{
+				lboxClient.SelectedIndex = -1;
 			}
 		}
 
@@ -145,10 +161,21 @@ namespace DependencyInjectionExampleGui
 			}
 			else
 			{
-				lbPhoneId.Text = "N/A";
-				lbPhoneClientId.Text = "N/A";
-				tbPhoneNumber.Text = string.Empty;
-				tbLocation.Text = string.Empty;
+				ClearPhoneForm();
+			}
+		}
+
+		private void ClearPhoneForm()
+		{
+			lbPhoneId.Text = "N/A";
+			lbPhoneClientId.Text = "N/A";
+			tbPhoneNumber.Text = string.Empty;
+			tbLocation.Text = string.Empty;
+			cbPhoneClients.SelectedIndex = -1;
+
+			if (lboxPhones.SelectedIndex != -1)
+			{
+				lboxClient.SelectedIndex = -1;
 			}
 		}
 

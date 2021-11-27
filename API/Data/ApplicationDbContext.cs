@@ -18,6 +18,6 @@ namespace API.Data
 		public DbSet<Address> Addresses { get; set; }
 
 		protected override void OnConfiguring(DbContextOptionsBuilder options)
-			=> options.UseSqlite("Data Source=data.db");
+			=> options.UseSqlite("Data Source = C:\\source\\repos\\interface-examples\\API\\data.db");
 	}
 }

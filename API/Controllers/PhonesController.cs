@@ -35,10 +35,10 @@ namespace API.Controllers
 			_repository.RemovePhoneNumber(phoneId);
 		}
 
-		[HttpPost("update/{phoneId}")]
-		public void UpdatePhone(int phoneId)
+		[HttpPost("update")]
+		public void UpdatePhone(PhoneNumber phone)
 		{
-			_repository.RemovePhoneNumber(phoneId);
+			_repository.UpdatePhoneNumber(phone);
 		}
 		#endregion
 	}

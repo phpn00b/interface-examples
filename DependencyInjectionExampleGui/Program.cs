@@ -3,6 +3,7 @@ using DependencyInjectionExample.Repository.Implementations;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows.Forms;
+using RestSharp;
 
 namespace DependencyInjectionExampleGui
 {
@@ -21,7 +22,10 @@ namespace DependencyInjectionExampleGui
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-			var services = new ServiceCollection();
+			var form1 = new Form1(new ApiRepository(new RestClient(_serverUrl)));
+			Application.Run(form1);
+
+			/*(var services = new ServiceCollection();
 
 			ConfigureServices(services);
 
@@ -29,14 +33,14 @@ namespace DependencyInjectionExampleGui
 			{
 				var form1 = serviceProvider.GetRequiredService<Form1>();
 				Application.Run(form1);
-			}
+			}*/
 		}
 
 
-		private static void ConfigureServices(ServiceCollection services)
+		/*private static void ConfigureServices(ServiceCollection services)
 		{
-			services.AddSingleton<IRepository>(_ => new ApiRepository(_serverUrl));
+			services.AddSingleton<IRepository>(_ => new ApiRepository(new RestClient(_serverUrl)));
 			services.AddScoped<Form1>();
-		}
+		}*/
 	}
 }

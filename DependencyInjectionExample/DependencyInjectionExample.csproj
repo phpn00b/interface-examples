@@ -5,7 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="BusinessLogic\" />
+    <Compile Remove="BusinessLogic\**" />
+    <EmbeddedResource Remove="BusinessLogic\**" />
+    <None Remove="BusinessLogic\**" />
   </ItemGroup>
 
   <ItemGroup>

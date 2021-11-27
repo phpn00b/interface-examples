@@ -45,7 +45,7 @@ namespace API
 			}
 
 			services.AddDbContext<ApplicationDbContext>(options =>
-				options.UseSqlite("Data Source=data.db"));
+				options.UseSqlite("Data Source=C:\\source\\repos\\interface-examples\\API\\data.db"));
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
 			{
